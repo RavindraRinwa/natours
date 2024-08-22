@@ -1,0 +1,22 @@
+{
+  "name": "natours",
+  "version": "1.0.0",
+  "description": "Learning node Express and mongoDB",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server.js"
+  },
+  "author": "Ravindra Rinwa",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "mongodb": "^6.8.0",
+    "mongoose": "^5.13.22",
+    "morgan": "^1.10.0",
+    "nodemon": "^3.1.4"
+  },
+  "engines": {
+    "node":">=10.0.0"
+  }
+}
