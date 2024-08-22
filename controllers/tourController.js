@@ -246,31 +246,6 @@ exports.updateTour = async (req, res) => {
   }
 };
 
-exports.removeField = async (req, res) => {
-  console.log('Received request to remove field');
-  try {
-    console.log('Starting field removal process');
-    const result = await Tour.updateMany(
-      { ratingAverage: { $exists: true } },
-      { $unset: { ratingAverage: '' } }
-    );
-
-    console.log('Field removal result:', result);
-
-    res.status(200).json({
-      status: 'success',
-      message: 'Field removed successfully',
-      data: result,
-    });
-  } catch (err) {
-    console.error('Error during field removal:', err);
-    res.status(400).json({
-      status: 'fail',
-      message: err.message,
-    });
-  }
-};
-
 exports.deleteTour = async (req, res) => {
   try {
     await Tour.findByIdAndDelete(req.params.id);
@@ -288,19 +263,16 @@ exports.deleteTour = async (req, res) => {
 
 exports.getTourStats = async (req, res) => {
   try {
-    const matchedTours = await Tour.find();
-    console.log(matchedTours);
-
     const stats = await Tour.aggregate([
       {
-        $match: { ratingsAverage: { $gte: 4.5 } },
+        $match: { ratingAverage: { $gte: 4.5 } },
       },
       {
         $group: {
           _id: null,
           numTours: { $sum: 1 },
-          numRatings: { $sum: '$ratingsAverage' },
-          avgRating: { $avg: '$ratingsAverage' },
+          numRatings: { $sum: '$ratingAverage' },
+          avgRating: { $avg: '$ratingAverage' },
           avgPrice: { $avg: '$price' },
           minPrice: { $min: '$price' },
           maxPrice: { $max: '$price' },

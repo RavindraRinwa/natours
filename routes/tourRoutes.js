@@ -27,8 +27,6 @@ router
 
 router.route('/tour-stats').get(tourController.getTourStats);
 
-router.route('/remove-field').patch(tourController.removeField);
-
 router
   .route('/:id')
   .get(tourController.getTour)
