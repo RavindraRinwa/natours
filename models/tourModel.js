@@ -76,6 +76,7 @@ const tourSchema = new mongoose.Schema(
       select: false,
     },
     startDates: [Date],
+<<<<<<< HEAD
     secretTour: {
       type: Boolean,
       default: false,
@@ -113,6 +114,8 @@ const tourSchema = new mongoose.Schema(
     ],
 =======
 >>>>>>> e26865a (i learn and apply about query middle.here query middle use with find hook which prevent the access of secret tour of common public)
+=======
+>>>>>>> 2f7003e (Updated tourModel.js to add middleware for secretTour filtering)
   },
   {
     toJSON: { virtuals: true },
@@ -125,6 +128,7 @@ tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
 
+<<<<<<< HEAD
 <<<<<<< HEAD
 // tourSchema.index({ price: 1 });
 tourSchema.index({ price: 1, ratingAverage: -1 });
@@ -152,6 +156,8 @@ tourSchema.virtual('reviews', {
 //4)model middle ware
 >>>>>>> e26865a (i learn and apply about query middle.here query middle use with find hook which prevent the access of secret tour of common public)
 
+=======
+>>>>>>> 2f7003e (Updated tourModel.js to add middleware for secretTour filtering)
 tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
@@ -167,6 +173,7 @@ tourSchema.pre('save', function (next) {
 //   next();
 // });
 
+<<<<<<< HEAD
 //QUERY MIDDLEWARE
 //here this keyword point to current query object not to current document
 
@@ -208,8 +215,16 @@ tourSchema.post(/^find/, function (docs, next) {
   next();
 });
 
+=======
+>>>>>>> 2f7003e (Updated tourModel.js to add middleware for secretTour filtering)
 const Tour = mongoose.model('Tour', tourSchema);
 
 //DOCUMENT MIDDLEWARE:runs before .save() and .create() but not on .insertMany
 
 module.exports = Tour;
+
+//four type of middle ware
+//1)query
+//2)document
+//3)aggrogate
+//4)model middle ware
