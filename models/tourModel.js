@@ -80,6 +80,7 @@ const tourSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+<<<<<<< HEAD
     startLocation: {
       //GeoJSON
       type: {
@@ -110,6 +111,8 @@ const tourSchema = new mongoose.Schema(
         ref: 'User',
       },
     ],
+=======
+>>>>>>> e26865a (i learn and apply about query middle.here query middle use with find hook which prevent the access of secret tour of common public)
   },
   {
     toJSON: { virtuals: true },
@@ -122,6 +125,7 @@ tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
 
+<<<<<<< HEAD
 // tourSchema.index({ price: 1 });
 tourSchema.index({ price: 1, ratingAverage: -1 });
 tourSchema.index({ slug: 1 });
@@ -140,6 +144,13 @@ tourSchema.virtual('reviews', {
 //   this.guides = await Promise.all(guidesPromises);
 //   next();
 // });
+=======
+//four type of middle ware
+//1)query
+//2)document
+//3)aggrogate
+//4)model middle ware
+>>>>>>> e26865a (i learn and apply about query middle.here query middle use with find hook which prevent the access of secret tour of common public)
 
 tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
@@ -168,6 +179,7 @@ tourSchema.pre(/^find/, function (next) {
   next();
 });
 
+<<<<<<< HEAD
 tourSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'guides',
@@ -188,6 +200,11 @@ tourSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
   // console.log(this.pipeline());
   // this.find({ secretTour: { $ne: true } });
+=======
+tourSchema.post(/^find/, function (docs, next) {
+  console.log(`Query took ${Date.now() - this.start} miliseconds!`);
+  console.log(docs);
+>>>>>>> e26865a (i learn and apply about query middle.here query middle use with find hook which prevent the access of secret tour of common public)
   next();
 });
 
@@ -196,9 +213,3 @@ const Tour = mongoose.model('Tour', tourSchema);
 //DOCUMENT MIDDLEWARE:runs before .save() and .create() but not on .insertMany
 
 module.exports = Tour;
-
-//four type of middle ware
-//1)query
-//2)document
-//3)aggrogate
-//4)model middle ware
