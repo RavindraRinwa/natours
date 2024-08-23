@@ -55,10 +55,6 @@ const tourSchema = new mongoose.Schema(
       select: false,
     },
     startDates: [Date],
-    secretTour: {
-      type: Boolean,
-      default: false,
-    },
   },
   {
     toJSON: { virtuals: true },
@@ -69,12 +65,6 @@ const tourSchema = new mongoose.Schema(
 tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
-
-//four type of middle ware
-//1)query
-//2)document
-//3)aggrogate
-//4)model middle ware
 
 tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
@@ -91,26 +81,14 @@ tourSchema.pre('save', function (next) {
 //   next();
 // });
 
-//QUERY MIDDLEWARE
-//here this keyword point to current query object not to current document
-
-//  /^find/ all string start with find
-tourSchema.pre(/^find/, function (next) {
-  this.find({ secretTour: { $ne: true } });
-
-  //add new property as regular object
-  this.start = Date.now();
-  next();
-});
-
-tourSchema.post(/^find/, function (docs, next) {
-  console.log(`Query took ${Date.now() - this.start} miliseconds!`);
-  console.log(docs);
-  next();
-});
-
 const Tour = mongoose.model('Tour', tourSchema);
 
 //DOCUMENT MIDDLEWARE:runs before .save() and .create() but not on .insertMany
 
 module.exports = Tour;
+
+//four type of middle ware
+//1)query
+//2)document
+//3)aggrogate
+//4)model middle ware
