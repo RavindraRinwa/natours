@@ -25,13 +25,18 @@ mongoose
   .then((con) => {
     // console.log(con.connections);
     console.log('DB connection successful!');
-  })
-  .catch((err) => {
-    console.error('DB connection error:', err.message);
   });
 
 // Server setup
 const port = process.env.PORT || 3000;
-app.listen(port, () => {
+const server = app.listen(port, () => {
   console.log(`App running on port ${port}`);
+});
+
+//To handle any promise rejection
+process.on('unhandledRejection', (err) => {
+  console.log(err.name, err.message);
+  server.close(() => {
+    process.exit(1);
+  });
 });
