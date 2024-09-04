@@ -116,7 +116,7 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
   // // console.log(req.query, queryObj);
 
   // let query = Tour.find(JSON.parse(queryStr));
-  // //{difficulty:'easy',duration:{$gte:5}}
+  // // {difficulty:'easy',duration:{$gte:5}}
 
   //2)Sorting
 
@@ -184,7 +184,7 @@ exports.getAllTours = catchAsync(async (req, res, next) => {
 
 exports.getTour = catchAsync(async (req, res, next) => {
   const tour = await Tour.findById(req.params.id);
-
+  console.log(tour);
   if (!tour) {
     return next(new AppError('No tour found with that ID', 404));
   }
