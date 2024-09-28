@@ -1,12 +1,15 @@
 const dotenv = require('dotenv');
 const mongoose = require('mongoose');
+dotenv.config({ path: './config.env' });
 
 process.on('uncaughtException', (err) => {
   console.log(err);
   process.exit(1);
 });
 
-dotenv.config({ path: './config.env' });
+if (process.env.NODE_ENV.trim() === 'development') {
+  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+}
 
 const app = require('./app');
 
@@ -24,8 +27,6 @@ mongoose
   .connect(DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
   })
   .then((con) => {
     // console.log(con.connections);
