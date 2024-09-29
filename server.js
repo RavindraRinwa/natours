@@ -7,10 +7,6 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
-if (process.env.NODE_ENV.trim() === 'development') {
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-}
-
 const app = require('./app');
 
 if (!process.env.DATABASE) {
