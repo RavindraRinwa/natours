@@ -2,10 +2,21 @@ const fs = require('fs');
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
+const rateLimit = require('express-rate-limit');
 
+//1)GLOBAL MIDDLEWARES
 if (process.env.NODE_ENV.trim() === 'development') {
   app.use(morgan('dev'));
 }
+
+const limiter = rateLimit({
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: 'Too may requestes from this Ip,please try again in an hour!',
+});
+
+app.use('/api', limiter);
+
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
 const tourRouter = require('./routes/tourRoutes');
