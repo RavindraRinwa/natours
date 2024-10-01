@@ -18,8 +18,6 @@ mongoose
   .connect(DB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
-    useCreateIndex: true,
-    useFindAndModify: false,
   })
   .then((con) => {
     // console.log(con.connections);
@@ -33,9 +31,7 @@ mongoose
 //This is json so we need to create javascript object
 // const tours = fs.readFileSync('tour-simple.json', 'utf-8');
 
-const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/tours-simple.json`, 'utf-8')
-);
+const tours = JSON.parse(fs.readFileSync(`${__dirname}/tours.json`, 'utf-8'));
 
 //IMPORT DATA INTO DB
 const importData = async () => {
