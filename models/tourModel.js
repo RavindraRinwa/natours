@@ -120,6 +120,10 @@ tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
 
+// tourSchema.index({ price: 1 });
+tourSchema.index({ price: 1, ratingAverage: -1 });
+tourSchema.index({ slug: 1 });
+
 //Virtual populate
 tourSchema.virtual('reviews', {
   ref: 'Review',
