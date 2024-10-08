@@ -88,7 +88,6 @@
 const fs = require('fs');
 const Tour = require(`./../models/tourModel`);
 
-const APIFeatures = require('./../utils/apiFeatures');
 const catchAsync = require('./../utils/catchAsync');
 const AppError = require('../utils/appError');
 const factory = require('./handlerFactory');
@@ -100,103 +99,92 @@ exports.aliasTopTours = (req, res, next) => {
   next();
 };
 
-exports.getAllTours = catchAsync(async (req, res, next) => {
-  //create a copy of req.query
-  //BUILD QUERY
-  //1A)Filtering
-  // const queryObj = { ...req.query };
-  // const excludedFields = ['page', 'sort', 'limit', 'fields'];
-  // excludedFields.forEach((el) => delete queryObj[el]);
+// exports.getAllTours = catchAsync(async (req, res, next) => {
+//   //create a copy of req.query
+//   //BUILD QUERY
+//   //1A)Filtering
+//   // const queryObj = { ...req.query };
+//   // const excludedFields = ['page', 'sort', 'limit', 'fields'];
+//   // excludedFields.forEach((el) => delete queryObj[el]);
 
-  // //1B)Advanced filtering
-  // let queryStr = JSON.stringify(queryObj);
+//   // //1B)Advanced filtering
+//   // let queryStr = JSON.stringify(queryObj);
 
-  // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
+//   // queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match) => `$${match}`);
 
-  // // console.log();
-  // // console.log(req.query, queryObj);
+//   // // console.log();
+//   // // console.log(req.query, queryObj);
 
-  // let query = Tour.find(JSON.parse(queryStr));
-  // // {difficulty:'easy',duration:{$gte:5}}
+//   // let query = Tour.find(JSON.parse(queryStr));
+//   // // {difficulty:'easy',duration:{$gte:5}}
 
-  //2)Sorting
+//   //2)Sorting
 
-  //127.0.0.1:4000/api/v1/tours?sort=-price for sorting in desending order
-  // if (req.query.sort) {
-  //   const sortBy = req.query.sort.split(',').join(' ');
-  //   query = query.sort(sortBy);
-  //   //sort('price ratingAverage')
-  // } else {
-  //   query = query.sort('-createdAt');
-  // }
+//   //127.0.0.1:4000/api/v1/tours?sort=-price for sorting in desending order
+//   // if (req.query.sort) {
+//   //   const sortBy = req.query.sort.split(',').join(' ');
+//   //   query = query.sort(sortBy);
+//   //   //sort('price ratingAverage')
+//   // } else {
+//   //   query = query.sort('-createdAt');
+//   // }
 
-  //{ duration: { gte: '5' }, difficulty: 'easy' }
-  // const tours = await Tour.find({
-  //   duration: 5,
-  //   difficulty: 'easy',
-  // });
+//   //{ duration: { gte: '5' }, difficulty: 'easy' }
+//   // const tours = await Tour.find({
+//   //   duration: 5,
+//   //   difficulty: 'easy',
+//   // });
 
-  // const tours = await Tour.find()
-  //   .where('duration')
-  //   .equals(5)
-  //   .where('difficulty')
-  //   .equals('easy');
+//   // const tours = await Tour.find()
+//   //   .where('duration')
+//   //   .equals(5)
+//   //   .where('difficulty')
+//   //   .equals('easy');
 
-  // //3)Field limiting
-  // if (req.query.fields) {
-  //   const fields = req.query.fields.split(',').join(' ');
-  //   query = query.select(fields);
-  // } else {
-  //   query = query.select('-__v');
-  // }
+//   // //3)Field limiting
+//   // if (req.query.fields) {
+//   //   const fields = req.query.fields.split(',').join(' ');
+//   //   query = query.select(fields);
+//   // } else {
+//   //   query = query.select('-__v');
+//   // }
 
-  //4)Pagination
-  // const page = req.query.page * 1 || 1;
-  // const limit = req.query.limit * 1 || 100;
-  // const skip = (page - 1) * limit;
-  // //page=2&limit=10,1-10,page 1,11-20,pag2 2
-  // query = query.skip(skip).limit(limit);
+//   //4)Pagination
+//   // const page = req.query.page * 1 || 1;
+//   // const limit = req.query.limit * 1 || 100;
+//   // const skip = (page - 1) * limit;
+//   // //page=2&limit=10,1-10,page 1,11-20,pag2 2
+//   // query = query.skip(skip).limit(limit);
 
-  // if (req.query.page) {
-  //   const numTours = await Tour.countDocuments();
-  //   if (skip >= numTours) throw new Error('This page does not exist');
-  // }
+//   // if (req.query.page) {
+//   //   const numTours = await Tour.countDocuments();
+//   //   if (skip >= numTours) throw new Error('This page does not exist');
+//   // }
 
-  //EXECUTE QUERY
-  // const tours = await query;
+//   //EXECUTE QUERY
+//   // const tours = await query;
 
-  const features = new APIFeatures(Tour.find(), req.query)
-    .filter()
-    .sort()
-    .limitFields()
-    .paginate();
+//   const features = new APIFeatures(Tour.find(), req.query)
+//     .filter()
+//     .sort()
+//     .limitFields()
+//     .paginate();
 
-  const tours = await features.query;
+//   const tours = await features.query;
 
-  //SEND RESPONSE
-  res.status(200).json({
-    status: 'success',
-    result: tours.length,
-    data: {
-      tour: tours,
-    },
-  });
-});
+//   //SEND RESPONSE
+//   res.status(200).json({
+//     status: 'success',
+//     result: tours.length,
+//     data: {
+//       tour: tours,
+//     },
+//   });
+// });
 
-exports.getTour = catchAsync(async (req, res, next) => {
-  const tour = await Tour.findById(req.params.id).populate('reviews');
-  // console.log(tour);
-  if (!tour) {
-    return next(new AppError('No tour found with that ID', 404));
-  }
-  //Tour.findOne({_id:req.params.id})
-  res.status(200).json({
-    status: 'success',
-    data: {
-      tour: tour,
-    },
-  });
-});
+exports.getAllTours = factory.getAll(Tour);
+
+exports.getTour = factory.getOne(Tour, { path: 'reviews' });
 
 //There is two big problem it would not work at all
 /*
