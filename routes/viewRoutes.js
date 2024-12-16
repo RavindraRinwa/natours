@@ -7,9 +7,10 @@ const viewsController = require('../controllers/viewController');
 
 router.use(authController.isLoggedIn);
 
-router.get('/', viewsController.getOverivew);
-router.get('/tour/:slug', viewsController.getTour);
+router.get('/', authController.isLoggedIn, viewsController.getOverivew);
+router.get('/tour/:slug', authController.isLoggedIn, viewsController.getTour);
 
-router.get('/login', viewsController.getLoginForm);
+router.get('/login', authController.isLoggedIn, viewsController.getLoginForm);
+router.get('/me', authController.protect, viewsController.getAccount);
 
 module.exports = router;
