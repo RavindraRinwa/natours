@@ -1,5 +1,4 @@
 const mongoose = require('mongoose');
-
 const bookingSchema = new mongoose.Schema({
   tour: {
     type: mongoose.Schema.ObjectId,
@@ -30,6 +29,7 @@ bookingSchema.pre('/^find', function (next) {
     path: 'tour',
     select: 'name',
   });
+  next();
 });
 
 const Booking = mongoose.model('Booking', bookingSchema);
