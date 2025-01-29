@@ -1,7 +1,8 @@
 extends base
 
 block append head
-  //-  script(src='/js/mapbox.js')
+  
+
 
 mixin overviewBox(label, text, icon)
   .overview-box__detail
@@ -36,9 +37,7 @@ block content
       div
         .overview-box__group
           h2.heading-secondary.ma-bt-lg Quick facts
-
           - const date = tour.startDates[0].toLocaleString('en-us', { month: 'long', year: 'numeric' })
-
           +overviewBox('Next date', date, 'calendar')
           +overviewBox('Difficulty', tour.difficulty, 'trending-up')
           +overviewBox('Participants', `${tour.maxGroupSize} people`, 'user')
@@ -46,7 +45,6 @@ block content
 
         .overview-box__group
           h2.heading-secondary.ma-bt-lg Your tour guides
-
           each guide in tour.guides
             .overview-box__detail
               img.overview-box__img(src=`/img/users/${guide.photo}`, alt=`${guide.name}`)
@@ -58,7 +56,6 @@ block content
     .description-box
       h2.heading-secondary.ma-bt-lg About #{tour.name} tour
       - const paragraphs = tour.description.split('\n')
-
       each p in paragraphs
         p.description__text= p
 
@@ -81,7 +78,12 @@ block content
         img(src='/img/logo-white.png', alt='Natours logo')
       img.cta__img.cta__img--1(src=`/img/tours/${tour.images[0]}`, alt='')
       img.cta__img.cta__img--2(src=`/img/tours/${tour.images[1]}`, alt='')
+
       .cta__content
         h2.heading-secondary What are you waiting for?
         p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
-        button.btn.btn--green.span-all-rows Book tour now!
+
+        if user
+          button.btn.btn--green.span-all-rows#book-tour(data-tour-id=`${tour.id}`) Book tour now!
+        else
+          a.btn.btn--green.span-all-rows(href='/login') Login to book tour!
