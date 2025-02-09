@@ -7,40 +7,81 @@ const Email = require('../utils/email');
 const bcrypt = require('bcryptjs');
 const crypto = require('crypto');
 
-const signToken = (id) => {
-  //payload(data),jwt secret,jwt expire time
-  return jwt.sign(
-    {
-      id: id,
-    },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: process.env.JWT_EXPIRES_IN,
-    }
-  );
+// const signToken = (id) => {
+//   //payload(data),jwt secret,jwt expire time
+//   return jwt.sign(
+//     {
+//       id: id,
+//     },
+//     process.env.JWT_SECRET,
+//     {
+//       expiresIn: process.env.JWT_EXPIRES_IN,
+//     }
+//   );
+// };
+const signAccessToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_ACCESS_SECRET, {
+    expiresIn: process.env.ACCESS_TOKEN_EXPIRES_IN,
+  });
 };
 
+const signRefreshToken = (id) => {
+  return jwt.sign({ id }, process.env.JWT_REFRESH_SECRET, {
+    expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN,
+  });
+};
+
+// const createSendToken = (user, statusCode, res) => {
+//   const token = signToken(user._id);
+
+//   const cookieOptions = {
+//     expires: new Date(
+//       Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+//     ),
+//     httpOnly: true,
+//   };
+//   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
+//   res.cookie('jwt', token, cookieOptions);
+
+//   //Remove the password from the password
+//   user.password = undefined;
+
+//   res.status(statusCode).json({
+//     status: 'success',
+//     token,
+//     data: {
+//       user,
+//     },
+//   });
+// };
+
 const createSendToken = (user, statusCode, res) => {
-  const token = signToken(user._id);
+  const accessToken = signAccessToken(user._id);
+  const refreshToken = signRefreshToken(user._id);
 
   const cookieOptions = {
     expires: new Date(
-      Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+      Date.now() + process.env.ACCESS_COOKIE_EXPIRES_IN * 60 * 1000
     ),
     httpOnly: true,
   };
   if (process.env.NODE_ENV === 'production') cookieOptions.secure = true;
-  res.cookie('jwt', token, cookieOptions);
 
-  //Remove the password from the password
+  res.cookie('accessToken', accessToken, cookieOptions);
+  res.cookie('refreshToken', refreshToken, {
+    ...cookieOptions,
+    expires: new Date(
+      Date.now() + process.env.REFRESH_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+    ),
+  });
+
   user.password = undefined;
 
   res.status(statusCode).json({
     status: 'success',
-    token,
-    data: {
-      user,
-    },
+    accessToken,
+    refreshToken,
+    data: { user },
   });
 };
 
@@ -77,14 +118,58 @@ exports.login = catchAsync(async (req, res, next) => {
   //3)If everything ok,send token to client
   createSendToken(user, 200, res);
 });
+// exports.logout = (req, res) => {
+//   res.cookie('jwt', 'loggedout', {
+//     expires: new Date(Date.now() + 10 * 1000 * 60),
+//     httpOnly: true,
+//   });
+//   res.status(200).json({ status: 'success' });
+// };
 
 exports.logout = (req, res) => {
-  res.cookie('jwt', 'loggedout', {
-    expires: new Date(Date.now() + 10 * 1000 * 60),
+  res.cookie('accessToken', 'loggedout', {
+    expires: new Date(Date.now() + 10 * 1000),
     httpOnly: true,
   });
+  res.cookie('refreshToken', '', {
+    expires: new Date(Date.now()),
+    httpOnly: true,
+  });
+
   res.status(200).json({ status: 'success' });
 };
+
+exports.generateAccessToken = catchAsync(async (req, res, next) => {
+  const refreshToken = req.cookies.refreshToken;
+  if (!refreshToken) {
+    // console.log(token);
+    return next(
+      new AppError('You are not logged in! Please log in to get access'),
+      401
+    );
+  }
+  const decoded = await promisify(jwt.verify)(
+    refreshToken,
+    process.env.JWT_REFRESH_SECRET
+  );
+
+  const user = await User.findById(decoded.id);
+  if (!user) {
+    return next(new AppError('User not found!', 404));
+  }
+
+  const newAccessToken = signAccessToken(user._id);
+  res.cookie('accessToken', newAccessToken, {
+    expires: new Date(
+      Date.now() + process.env.ACCESS_COOKIE_EXPIRES_IN * 60 * 1000
+    ),
+    httpOnly: true,
+  });
+  res.status(200).json({
+    status: 'success',
+    accessToken: newAccessToken,
+  });
+});
 
 exports.protect = catchAsync(async (req, res, next) => {
   //1)getting token and check if it's there
@@ -94,8 +179,8 @@ exports.protect = catchAsync(async (req, res, next) => {
     req.headers.authorization.startsWith('Bearer')
   ) {
     token = req.headers.authorization.split(' ')[1];
-  } else if (req.cookies.jwt) {
-    token = req.cookies.jwt;
+  } else if (req.cookies.accessToken) {
+    token = req.cookies.accessToken;
   }
   if (!token) {
     // console.log(token);
@@ -105,7 +190,10 @@ exports.protect = catchAsync(async (req, res, next) => {
     );
   }
   //2)Verification token
-  const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+  const decoded = await promisify(jwt.verify)(
+    token,
+    process.env.JWT_ACCESS_SECRET
+  );
   // console.log(decoded);
 
   //3)Check if user still exits
@@ -134,12 +222,12 @@ exports.protect = catchAsync(async (req, res, next) => {
 //Only for rendered pages,no errors !
 exports.isLoggedIn = async (req, res, next) => {
   //1)getting token and check if it's there
-  if (req.cookies.jwt) {
+  if (req.cookies.accessToken) {
     try {
       //verify token
       const decoded = await promisify(jwt.verify)(
-        req.cookies.jwt,
-        process.env.JWT_SECRET
+        req.cookies.accessToken,
+        process.env.JWT_ACCESS_SECRET
       );
 
       const currentUser = await User.findById(decoded.id);

@@ -8,6 +8,7 @@ const xss = require('xss-clean');
 const hpp = require('hpp');
 const path = require('path');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -19,6 +20,13 @@ const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
 
+app.use(cors());
+app.use(
+  cors({
+    origin: 'http://localhost:5173',
+    credentials: true,
+  })
+);
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -108,7 +116,6 @@ app.use((req, res, next) => {
 //   console.log('Hello from the middle ware');
 //   next();
 // });
-
 app.use('/', viewRouter);
 app.use('/api/v1/tours', tourRouter);
 app.use('/api/v1/users', userRouter);
