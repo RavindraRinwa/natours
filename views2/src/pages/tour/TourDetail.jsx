@@ -1,6 +1,7 @@
 import React, { useContext } from 'react';
 import ReviewCard from '../account/reviewCard'; // Assuming ReviewCard is a separate component
 import { UserContext } from '../../../App';
+import { bookTour } from '../../api/js/stripe';
 
 const OverviewBox = ({ label, text, icon }) => {
   return (
@@ -21,6 +22,17 @@ const TourDetail = ({ tour, user }) => {
     year: 'numeric',
   });
   const paragraphs = tour.description.split('\n');
+
+  const handleBookTour = (e) => {
+    e.target.textContent = 'Processing.....';
+    const tourId = e.target.dataset.tourId;
+    console.log(tourId);
+    try {
+      bookTour(tourId);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
   return (
     <main className="main">
@@ -158,6 +170,7 @@ const TourDetail = ({ tour, user }) => {
                 className="btn btn--green span-all-rows"
                 id="book-tour"
                 data-tour-id={tour.id}
+                onClick={handleBookTour}
               >
                 Book tour now!
               </button>

@@ -48,6 +48,26 @@ exports.createBookingCheckout = catchAsync(async (req, res, next) => {
   res.redirect(req.originalUrl.split('?')[0]);
 });
 
+exports.getMyBooking = catchAsync(async (req, res, next) => {
+  const bookings = await Booking.find({ user: req.user._id })
+    .populate({
+      path: 'tour',
+      select: 'name imageCover price duration',
+    })
+    .populate({
+      path: 'user',
+      select: 'name email',
+    });
+
+  res.status(200).json({
+    status: 'success',
+    results: bookings.length,
+    data: {
+      bookings,
+    },
+  });
+});
+
 exports.createBooking = factory.createOne(Booking);
 exports.getBooking = factory.getOne(Booking);
 exports.getAllBooking = factory.getAll(Booking);

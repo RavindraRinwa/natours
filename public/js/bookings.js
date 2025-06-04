@@ -3,10 +3,10 @@ import { showAlert } from './alerts';
 
 export const getBookings = async () => {
   try {
-    const res = await axios.get('/api/v1/bookings/getMyBookings', {
+    const res = await axios.get('/api/v1/bookings/my-bookings', {
       withCredentials: true,
     });
-    console.log(res.data);
+
     if (res.data.status === 'success') {
       return res.data.data.bookings;
     }

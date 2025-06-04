@@ -91,8 +91,8 @@ const UserSettings = () => {
         <nav className="user-view__menu">
           <ul className="side-nav">
             <NavItem link="#" text="Settings" icon="settings" active={true} />
-            <NavItem link="/my-tours" text="My bookings" icon="briefcase" />
-            <NavItem link="#" text="My reviews" icon="star" />
+            <NavItem link="/my-bookings" text="My bookings" icon="briefcase" />
+            <NavItem link="/my-reviews" text="My reviews" icon="star" />
             <NavItem link="#" text="Billing" icon="credit-card" />
             {user?.role === 'admin' && (
               <div className="admin-nav">

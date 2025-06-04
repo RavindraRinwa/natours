@@ -55,6 +55,7 @@ if (userPasswordForm) {
 if (logOutBtn) {
   logOutBtn.addEventListener('click', logout);
 }
+
 if (bookBtn) {
   bookBtn.addEventListener('click', (e) => {
     e.target.textContent = 'Processing.....';
