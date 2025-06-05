@@ -9,6 +9,7 @@ import LoginPage from './src/pages/loginandsignup/login'; // For login page
 import UserProfile from './src/pages/account/account.jsx'; // User profile page
 import MyBookings from './src/pages/account/MyBookings';
 import MyReviews from './src/pages/account/MyReviews.jsx';
+import TourManagementPage from './src/pages/tour/tourManagement.jsx';
 import api from './src/api/js/api.js';
 
 import { initialState, reducer } from './reducer/UseReducer';
@@ -46,6 +47,10 @@ const App = () => {
           <Route path="/me" element={<UserProfile />} />
           <Route path="/my-bookings" element={<MyBookings />}></Route>
           <Route path="/my-reviews" element={<MyReviews />}></Route>
+          <Route
+            path="/tour-management"
+            element={<TourManagementPage />}
+          ></Route>
         </Routes>
         <Footer />
       </UserContext.Provider>
