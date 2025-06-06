@@ -105,7 +105,11 @@ const UserSettings = () => {
                   />
                   <NavItem link="#" text="Manage users" icon="users" />
                   <NavItem link="#" text="Manage reviews" icon="star" />
-                  <NavItem link="#" text="Manage bookings" icon="briefcase" />
+                  <NavItem
+                    link="/booking-management"
+                    text="Manage bookings"
+                    icon="briefcase"
+                  />
                 </ul>
               </div>
             )}

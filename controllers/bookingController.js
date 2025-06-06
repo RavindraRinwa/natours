@@ -68,8 +68,27 @@ exports.getMyBooking = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getAllBooking = catchAsync(async (req, res) => {
+  const bookings = await Booking.find()
+    .populate({
+      path: 'tour',
+      select: 'name imageCover price duration',
+    })
+    .populate({
+      path: 'user',
+      select: 'name email',
+    });
+
+  res.status(200).json({
+    status: 'success',
+    results: bookings.length,
+    data: {
+      bookings,
+    },
+  });
+});
+
 exports.createBooking = factory.createOne(Booking);
 exports.getBooking = factory.getOne(Booking);
-exports.getAllBooking = factory.getAll(Booking);
 exports.updateBooking = factory.updateOne(Booking);
 exports.deleteBooking = factory.deleteOne(Booking);

@@ -10,6 +10,7 @@ import UserProfile from './src/pages/account/account.jsx'; // User profile page
 import MyBookings from './src/pages/account/MyBookings';
 import MyReviews from './src/pages/account/MyReviews.jsx';
 import TourManagementPage from './src/pages/tour/tourManagement.jsx';
+import BookingManagementPage from './src/pages/tour/bookingManagement.jsx';
 import api from './src/api/js/api.js';
 
 import { initialState, reducer } from './reducer/UseReducer';
@@ -50,6 +51,10 @@ const App = () => {
           <Route
             path="/tour-management"
             element={<TourManagementPage />}
+          ></Route>
+          <Route
+            path="/booking-management"
+            element={<BookingManagementPage />}
           ></Route>
         </Routes>
         <Footer />

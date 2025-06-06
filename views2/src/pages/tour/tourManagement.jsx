@@ -126,7 +126,27 @@ export default function TourManagementPage() {
   const handleCancel = () => {
     setEditTourId(null);
     setIsAdding(false);
-    setForm({ name: '', duration: '', price: '', description: '', image: '' });
+    setForm({
+      name: '',
+      duration: '',
+      maxGroupSize: '',
+      difficulty: 'easy',
+      price: '',
+      summary: '',
+      description: '',
+      imageCover: '',
+      images: [],
+      startDates: [],
+      secretTour: false,
+      startLocation: {
+        type: 'Point',
+        coordinates: ['', ''],
+        address: '',
+        description: '',
+      },
+      guides: [],
+      locations: [],
+    });
     setError(null);
   };
 
