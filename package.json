@@ -20,7 +20,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "eslint": "^9.9.1",
-    "express": "^4.19.2",
+    "express": "^4.21.2",
     "express-mongo-sanitize": "^2.2.0",
     "express-rate-limit": "^7.4.0",
     "framer-motion": "^12.4.3",
