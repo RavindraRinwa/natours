@@ -93,7 +93,6 @@ const UserSettings = () => {
             <NavItem link="#" text="Settings" icon="settings" active={true} />
             <NavItem link="/my-bookings" text="My bookings" icon="briefcase" />
             <NavItem link="/my-reviews" text="My reviews" icon="star" />
-            <NavItem link="#" text="Billing" icon="credit-card" />
             {user?.role === 'admin' && (
               <div className="admin-nav">
                 <h5 className="admin-nav__heading">Admin</h5>
@@ -103,8 +102,11 @@ const UserSettings = () => {
                     text="Manage tours"
                     icon="map"
                   />
-                  <NavItem link="#" text="Manage users" icon="users" />
-                  <NavItem link="#" text="Manage reviews" icon="star" />
+                  <NavItem
+                    link="/user-management"
+                    text="Manage users"
+                    icon="users"
+                  />
                   <NavItem
                     link="/booking-management"
                     text="Manage bookings"

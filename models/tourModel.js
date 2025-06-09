@@ -76,12 +76,10 @@ const tourSchema = new mongoose.Schema(
       select: false,
     },
     startDates: [Date],
-<<<<<<< HEAD
     secretTour: {
       type: Boolean,
       default: false,
     },
-<<<<<<< HEAD
     startLocation: {
       //GeoJSON
       type: {
@@ -112,10 +110,6 @@ const tourSchema = new mongoose.Schema(
         ref: 'User',
       },
     ],
-=======
->>>>>>> e26865a (i learn and apply about query middle.here query middle use with find hook which prevent the access of secret tour of common public)
-=======
->>>>>>> 2f7003e (Updated tourModel.js to add middleware for secretTour filtering)
   },
   {
     toJSON: { virtuals: true },
@@ -128,9 +122,6 @@ tourSchema.virtual('durationWeeks').get(function () {
   return this.duration / 7;
 });
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-// tourSchema.index({ price: 1 });
 tourSchema.index({ price: 1, ratingAverage: -1 });
 tourSchema.index({ slug: 1 });
 
@@ -148,16 +139,11 @@ tourSchema.virtual('reviews', {
 //   this.guides = await Promise.all(guidesPromises);
 //   next();
 // });
-=======
 //four type of middle ware
 //1)query
 //2)document
 //3)aggrogate
 //4)model middle ware
->>>>>>> e26865a (i learn and apply about query middle.here query middle use with find hook which prevent the access of secret tour of common public)
-
-=======
->>>>>>> 2f7003e (Updated tourModel.js to add middleware for secretTour filtering)
 tourSchema.pre('save', function (next) {
   this.slug = slugify(this.name, { lower: true });
   next();
@@ -172,8 +158,6 @@ tourSchema.pre('save', function (next) {
 //   console.log(doc);
 //   next();
 // });
-
-<<<<<<< HEAD
 //QUERY MIDDLEWARE
 //here this keyword point to current query object not to current document
 
@@ -186,7 +170,6 @@ tourSchema.pre(/^find/, function (next) {
   next();
 });
 
-<<<<<<< HEAD
 tourSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'guides',
@@ -207,16 +190,13 @@ tourSchema.pre('aggregate', function (next) {
   this.pipeline().unshift({ $match: { secretTour: { $ne: true } } });
   // console.log(this.pipeline());
   // this.find({ secretTour: { $ne: true } });
-=======
-tourSchema.post(/^find/, function (docs, next) {
-  console.log(`Query took ${Date.now() - this.start} miliseconds!`);
-  console.log(docs);
->>>>>>> e26865a (i learn and apply about query middle.here query middle use with find hook which prevent the access of secret tour of common public)
-  next();
+  tourSchema.post(/^find/, function (docs, next) {
+    console.log(`Query took ${Date.now() - this.start} miliseconds!`);
+    console.log(docs);
+    next();
+  });
 });
 
-=======
->>>>>>> 2f7003e (Updated tourModel.js to add middleware for secretTour filtering)
 const Tour = mongoose.model('Tour', tourSchema);
 
 //DOCUMENT MIDDLEWARE:runs before .save() and .create() but not on .insertMany

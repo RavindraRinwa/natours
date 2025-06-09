@@ -11,6 +11,7 @@ import MyBookings from './src/pages/account/MyBookings';
 import MyReviews from './src/pages/account/MyReviews.jsx';
 import TourManagementPage from './src/pages/tour/tourManagement.jsx';
 import BookingManagementPage from './src/pages/tour/bookingManagement.jsx';
+import UserManagementPage from './src/pages/account/userManagement.jsx';
 import api from './src/api/js/api.js';
 
 import { initialState, reducer } from './reducer/UseReducer';
@@ -55,6 +56,10 @@ const App = () => {
           <Route
             path="/booking-management"
             element={<BookingManagementPage />}
+          ></Route>
+          <Route
+            path="/user-management"
+            element={<UserManagementPage />}
           ></Route>
         </Routes>
         <Footer />

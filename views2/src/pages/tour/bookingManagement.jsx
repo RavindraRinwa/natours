@@ -122,24 +122,28 @@ export default function BookingManagementPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-green-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="mb-8">
+        <div className="mb-8 text-center sm:text-left">
           <h1 className="text-3xl font-bold text-gray-900">
-            Booking Management
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-green-600 to-green-800">
+              Booking Management
+            </span>
           </h1>
-          <p className="mt-2 text-gray-600">
-            Manage and monitor all tour bookings
+          <p className="mt-2 text-gray-600 max-w-2xl">
+            Manage and monitor all tour bookings for Natours
           </p>
         </div>
 
         {/* Alerts */}
         {error && (
-          <div className="mb-6 bg-red-50 border border-red-200 rounded-lg p-4 flex items-center justify-between">
-            <div className="flex items-center">
-              <AlertTriangle className="h-5 w-5 text-red-500 mr-3" />
-              <span className="text-red-800">{error}</span>
+          <div className="mb-6 bg-red-50 border-l-4 border-red-500 rounded-lg p-4 flex items-start shadow-sm">
+            <div className="flex-shrink-0">
+              <AlertTriangle className="h-5 w-5 text-red-500" />
+            </div>
+            <div className="ml-3 flex-1">
+              <p className="text-sm text-red-800">{error}</p>
             </div>
             <button
               onClick={() => setError('')}
@@ -151,10 +155,12 @@ export default function BookingManagementPage() {
         )}
 
         {success && (
-          <div className="mb-6 bg-green-50 border border-green-200 rounded-lg p-4 flex items-center justify-between">
-            <div className="flex items-center">
-              <CheckCircle className="h-5 w-5 text-green-500 mr-3" />
-              <span className="text-green-800">{success}</span>
+          <div className="mb-6 bg-green-50 border-l-4 border-green-500 rounded-lg p-4 flex items-start shadow-sm">
+            <div className="flex-shrink-0">
+              <CheckCircle className="h-5 w-5 text-green-500" />
+            </div>
+            <div className="ml-3 flex-1">
+              <p className="text-sm text-green-800">{success}</p>
             </div>
             <button
               onClick={() => setSuccess('')}
@@ -166,17 +172,19 @@ export default function BookingManagementPage() {
         )}
 
         {/* Controls */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-6">
           <div className="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
             {/* Search */}
             <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <Search className="h-5 w-5 text-gray-400" />
+              </div>
               <input
                 type="text"
                 placeholder="Search bookings, users, or tours..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="block w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all"
               />
             </div>
 
@@ -184,7 +192,7 @@ export default function BookingManagementPage() {
             <div className="relative">
               <button
                 onClick={() => setShowFilterDropdown(!showFilterDropdown)}
-                className="inline-flex items-center px-4 py-2 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="inline-flex items-center px-4 py-2 border border-gray-200 rounded-lg bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-green-500 transition-all"
               >
                 <Filter className="h-4 w-4 mr-2 text-gray-500" />
                 {getFilterLabel()}
@@ -192,7 +200,7 @@ export default function BookingManagementPage() {
               </button>
 
               {showFilterDropdown && (
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-100 z-10 overflow-hidden">
                   <div className="py-1">
                     {['all', 'active', 'past'].map((option) => (
                       <button
@@ -201,9 +209,9 @@ export default function BookingManagementPage() {
                           setFilter(option);
                           setShowFilterDropdown(false);
                         }}
-                        className={`w-full text-left px-4 py-2 hover:bg-gray-50 ${
+                        className={`w-full text-left px-4 py-2 hover:bg-gray-50 transition-colors ${
                           filter === option
-                            ? 'bg-blue-50 text-blue-700'
+                            ? 'bg-green-50 text-green-700'
                             : 'text-gray-700'
                         }`}
                       >
@@ -221,9 +229,9 @@ export default function BookingManagementPage() {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center">
-              <div className="p-2 bg-blue-100 rounded-lg">
+              <div className="p-3 bg-blue-50 rounded-xl">
                 <Calendar className="h-6 w-6 text-blue-600" />
               </div>
               <div className="ml-4">
@@ -235,10 +243,10 @@ export default function BookingManagementPage() {
             </div>
           </div>
 
-          <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
             <div className="flex items-center">
-              <div className="p-2 bg-yellow-100 rounded-lg">
-                <DollarSign className="h-6 w-6 text-yellow-600" />
+              <div className="p-3 bg-green-50 rounded-xl">
+                <DollarSign className="h-6 w-6 text-green-600" />
               </div>
               <div className="ml-4">
                 <p className="text-sm text-gray-600">Total Revenue</p>
@@ -251,10 +259,24 @@ export default function BookingManagementPage() {
               </div>
             </div>
           </div>
+
+          <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
+            <div className="flex items-center">
+              <div className="p-3 bg-amber-50 rounded-xl">
+                <User className="h-6 w-6 text-amber-600" />
+              </div>
+              <div className="ml-4">
+                <p className="text-sm text-gray-600">Active Customers</p>
+                <p className="text-2xl font-semibold text-gray-900">
+                  {[...new Set(bookings.map((b) => b.user._id))].length}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
 
         {/* Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
@@ -293,7 +315,7 @@ export default function BookingManagementPage() {
                       className="hover:bg-gray-50 transition-colors"
                     >
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="text-sm font-mono text-gray-900 bg-gray-100 px-2 py-1 rounded">
+                        <span className="text-xs font-mono text-gray-900 bg-gray-100 px-2 py-1 rounded">
                           #{booking._id.slice(-8)}
                         </span>
                       </td>
@@ -304,7 +326,7 @@ export default function BookingManagementPage() {
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
                         <div className="flex items-center">
-                          <div className="h-8 w-8 rounded-full bg-gradient-to-r from-blue-400 to-blue-600 flex items-center justify-center">
+                          <div className="h-8 w-8 rounded-full bg-gradient-to-r from-green-400 to-green-600 flex items-center justify-center">
                             <User className="h-4 w-4 text-white" />
                           </div>
                           <div className="ml-3">
@@ -339,7 +361,7 @@ export default function BookingManagementPage() {
                         <div className="flex space-x-2">
                           <button
                             onClick={() => alert('View booking details')}
-                            className="text-blue-600 hover:text-blue-900 p-2 rounded-lg hover:bg-blue-50 transition-colors"
+                            className="text-green-600 hover:text-green-800 p-2 rounded-lg hover:bg-green-50 transition-colors"
                             title="View booking details"
                           >
                             <Eye className="h-4 w-4" />
@@ -349,7 +371,7 @@ export default function BookingManagementPage() {
                               setSelectedBooking(booking);
                               setShowDeleteModal(true);
                             }}
-                            className="text-red-600 hover:text-red-900 p-2 rounded-lg hover:bg-red-50 transition-colors"
+                            className="text-red-600 hover:text-red-800 p-2 rounded-lg hover:bg-red-50 transition-colors"
                             title="Delete booking"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -361,10 +383,12 @@ export default function BookingManagementPage() {
                 ) : (
                   <tr>
                     <td colSpan="8" className="px-6 py-12 text-center">
-                      <div className="text-gray-500">
+                      <div className="text-gray-400">
                         <Calendar className="h-12 w-12 mx-auto mb-4 text-gray-300" />
-                        <p className="text-lg font-medium">No bookings found</p>
-                        <p className="text-sm">
+                        <p className="text-lg font-medium text-gray-500">
+                          No bookings found
+                        </p>
+                        <p className="text-sm mt-1">
                           Try adjusting your search or filter criteria
                         </p>
                       </div>
@@ -383,14 +407,14 @@ export default function BookingManagementPage() {
           </div>
         )}
 
-        {/* Pagination (placeholder for future implementation) */}
+        {/* Pagination */}
         {filteredBookings.length > 10 && (
           <div className="mt-6 flex items-center justify-between">
             <div className="flex-1 flex justify-between sm:hidden">
-              <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+              <button className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors">
                 Previous
               </button>
-              <button className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50">
+              <button className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-lg text-gray-700 bg-white hover:bg-gray-50 transition-colors">
                 Next
               </button>
             </div>
@@ -405,19 +429,19 @@ export default function BookingManagementPage() {
               </div>
               <div>
                 <nav
-                  className="relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
+                  className="relative z-0 inline-flex rounded-lg shadow-sm -space-x-px"
                   aria-label="Pagination"
                 >
-                  <button className="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                  <button className="relative inline-flex items-center px-2 py-2 rounded-l-lg border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors">
                     Previous
                   </button>
-                  <button className="bg-blue-50 border-blue-500 text-blue-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                  <button className="bg-green-50 border-green-500 text-green-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
                     1
                   </button>
-                  <button className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium">
+                  <button className="bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium transition-colors">
                     2
                   </button>
-                  <button className="relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+                  <button className="relative inline-flex items-center px-2 py-2 rounded-r-lg border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50 transition-colors">
                     Next
                   </button>
                 </nav>
@@ -430,32 +454,40 @@ export default function BookingManagementPage() {
       {/* Delete Confirmation Modal */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white rounded-lg shadow-xl max-w-md w-full transform transition-all">
+          <div className="bg-white rounded-xl shadow-xl max-w-md w-full transform transition-all">
             <div className="p-6">
-              <div className="flex items-center mb-4">
-                <div className="p-3 bg-red-100 rounded-full mr-4">
+              <div className="flex items-start mb-4">
+                <div className="p-3 bg-red-100 rounded-xl mr-4">
                   <AlertTriangle className="h-6 w-6 text-red-600" />
                 </div>
-                <h3 className="text-lg font-semibold text-gray-900">
-                  Confirm Deletion
-                </h3>
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-900">
+                    Confirm Deletion
+                  </h3>
+                  <p className="text-gray-600 mt-1">
+                    Are you sure you want to delete this booking?
+                  </p>
+                </div>
               </div>
 
-              <p className="text-gray-600 mb-6">
-                Are you sure you want to delete the booking for{' '}
-                <span className="font-medium text-gray-900">
-                  {selectedBooking?.user.name}
-                </span>{' '}
-                on{' '}
-                <span className="font-medium text-gray-900">
-                  {selectedBooking?.tour.name}
-                </span>
-                ?
-                <br />
-                <span className="text-sm text-red-600 mt-2 block">
+              <div className="bg-gray-50 rounded-lg p-4 mb-6">
+                <div className="flex items-center">
+                  <div className="h-10 w-10 rounded-full bg-gradient-to-r from-green-400 to-green-600 flex items-center justify-center">
+                    <User className="h-5 w-5 text-white" />
+                  </div>
+                  <div className="ml-3">
+                    <div className="text-sm font-medium text-gray-900">
+                      {selectedBooking?.user.name}
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {selectedBooking?.tour.name}
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-3 text-sm text-red-600">
                   This action cannot be undone.
-                </span>
-              </p>
+                </div>
+              </div>
 
               <div className="flex justify-end space-x-3">
                 <button
