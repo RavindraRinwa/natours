@@ -40,7 +40,7 @@ Built using **MERN Stack**:
 - PORT=5000
 - NODE_ENV=development
 - DATABASE_USERNAME=your_username
-- DATABASE=mongodb+srv://<USERNAME>:<PASSWORD>@clusters.ewclw.mongodb.net/natours?retryWrites=true&w=majority&appName=Clusters
+- DATABASE=mongodb+srv://< USERNAME >:< PASSWORD >@clusters.ewclw.mongodb.net/natours?retryWrites=true&w=majority&appName=Clusters
 - DATABASE_PASSWORD=your_password
 - JWT_REFRESH_SECRET=your_refresh_token_secret
 - JWT_ACCESS_SECRET=your_access_token_secret
