@@ -37,19 +37,19 @@ Built using **MERN Stack**:
 - React Router for navigation
 ---
 ### Config
-PORT=5000
-NODE_ENV=development
-DATABASE_USERNAME=your_username
-DATABASE=mongodb+srv://<USERNAME>:<PASSWORD>@clusters.ewclw.mongodb.net/natours?retryWrites=true&w=majority&appName=Clusters
-DATABASE_PASSWORD=your_password
-JWT_REFRESH_SECRET=your_refresh_token_secret
-JWT_ACCESS_SECRET=your_access_token_secret
-ACCESS_TOKEN_EXPIRES_IN=10m
-REFRESH_TOKEN_EXPIRES_IN=90d
-ACCESS_COOKIE_EXPIRES_IN=10
-REFRESH_COOKIE_EXPIRES_IN=90
-EMAIL_USERNAME=your_email_username
-EMAIL_PASSWORD=your_email_password
-EMAIL_HOST=smtp.yourprovider.com
-EMAIL_PORT=587
-STRIPE_SECRET_KEY=your_stripe_key
+- PORT=5000
+- NODE_ENV=development
+- DATABASE_USERNAME=your_username
+- DATABASE=mongodb+srv://<USERNAME>:<PASSWORD>@clusters.ewclw.mongodb.net/natours?retryWrites=true&w=majority&appName=Clusters
+- DATABASE_PASSWORD=your_password
+- JWT_REFRESH_SECRET=your_refresh_token_secret
+- JWT_ACCESS_SECRET=your_access_token_secret
+- ACCESS_TOKEN_EXPIRES_IN=10m
+- REFRESH_TOKEN_EXPIRES_IN=90d
+- ACCESS_COOKIE_EXPIRES_IN=10
+- REFRESH_COOKIE_EXPIRES_IN=90
+- EMAIL_USERNAME=your_email_username
+- EMAIL_PASSWORD=your_email_password
+- EMAIL_HOST=smtp.yourprovider.com
+- EMAIL_PORT=587
+- STRIPE_SECRET_KEY=your_stripe_key
